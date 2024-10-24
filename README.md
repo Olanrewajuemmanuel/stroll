@@ -12,6 +12,10 @@ pip install -r requirements.txt
 ```bash
 fastapi dev main.py
 ```
+OR if you have Uvicorn installed:
+```bash
+uvicorn main:app --reload
+```
 Note: A local SQL database is created and seeded with sample data to aid illustration.
 
 ## Routes
@@ -37,6 +41,17 @@ Response:
     ]
 }
 ```
+
+## Database Schema
+
+| Table Name         | Columns                                                                 |
+|--------------------|-------------------------------------------------------------------------|
+| `regions`          | `id` (PK), `name` (VARCHAR, UNIQUE)   `users` are associated with a region |
+| `questions`        | `id` (PK), `question_text` (TEXT), `region_id` (FK)   `questions are associated with a region |
+| `question_cycles`           | `id` (PK), `start_date` (TIMESTAMP), `duration` (INTEGER)   `cycles are associated with a duration` |
+| `assignments` | `id` (PK), `question_id` (FK), `cycle_id` (FK), `region_id` (FK)    |
+| `users`            | `id` (PK), `username` (VARCHAR, UNIQUE), `region_id` (FK)               |
+
 ## Strategy
 The main idea is to rotate questions based on the cycle duration, configurable at the region level. Each region follows its own cycle schedule, and the questions rotate every 7 days (or whatever the cycle configuration specifies). 
 
